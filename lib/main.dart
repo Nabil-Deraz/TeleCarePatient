@@ -9,6 +9,7 @@ import 'package:tecpatient/core/local/cache_helper.dart';
 import 'package:tecpatient/core/utils/app_router.dart';
 import 'package:tecpatient/mu_bloc_observer.dart';
 
+//main
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NetworkInfoImpl().checkInternet();
