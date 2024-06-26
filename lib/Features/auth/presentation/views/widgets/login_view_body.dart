@@ -61,12 +61,10 @@ class LoginViewBody extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
-                if (state is AuthLoading) {
-                  showAlert(
-                      title: "Loading",
-                      message: "Please Wait ",
-                      context: context);
+                if (state is LoginSuccess) {
+                  GoRouter.of(context).go(AppRouter.kHomeView);
                 }
+
                 if (state is LoginError) {
                   showAlert(
                       color: kRed,
@@ -76,8 +74,11 @@ class LoginViewBody extends StatelessWidget {
                           "You Should Try Again or Signup or check consultant checkbox",
                       context: context);
                 }
-                if (state is LoginSuccess) {
-                  GoRouter.of(context).go(AppRouter.kHomeView);
+                if (state is AuthLoading) {
+                  showAlert(
+                      title: "Loading",
+                      message: "Please Wait ",
+                      context: context);
                 }
               },
               builder: (context, state) {

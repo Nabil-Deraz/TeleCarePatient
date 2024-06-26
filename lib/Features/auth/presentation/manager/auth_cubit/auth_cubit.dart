@@ -20,9 +20,8 @@ class AuthCubit extends Cubit<AuthState> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordSignController = TextEditingController();
   TextEditingController natidController = TextEditingController();
-  String medicalSpecialtyValue = '';
+  TextEditingController birthDateController = TextEditingController();
   String governorate = '';
-  String hospital = '';
   bool isPatient = false;
   TextEditingController regNumController = TextEditingController();
   TextEditingController passwordLoginController = TextEditingController();
@@ -41,6 +40,10 @@ class AuthCubit extends Cubit<AuthState> {
         key: "regNum",
         value: patient.data?[0].attributes!.regNum,
       );
+      CacheHelper.saveData(
+        key: "Pid",
+        value: patient.data?[0].id,
+      );
       emit(LoginSuccess());
     } else {
       emit(LoginError("Error"));
@@ -57,21 +60,21 @@ class AuthCubit extends Cubit<AuthState> {
       uniqueID = await authRemoteDataSource.checkPatientID(id, isPatient);
       print("hola from signup");
     } while (uniqueID);
-    if (isPatient) {
-      bool consultant = await authRemoteDataSource.signupPatients(
-          id,
-          nameController.text,
-          phoneController.text,
-          emailController.text,
-          SecurityManager.hashPassword(passwordSignController.text),
-          natidController.text,
-          governorate,
-          ctx);
-      if (consultant) {
-        emit(SignupSuccess());
-      } else {
-        emit(SignupError("Error"));
-      }
+
+    bool patient = await authRemoteDataSource.signupPatients(
+        regNum: id,
+        name: nameController.text,
+        phone: phoneController.text,
+        email: emailController.text,
+        password: SecurityManager.hashPassword(passwordSignController.text),
+        natid: natidController.text,
+        birthdate: birthDateController.text,
+        governorate: governorate,
+        context: ctx);
+    if (patient) {
+      emit(SignupSuccess());
+    } else {
+      emit(SignupError("Error"));
     }
   }
 
@@ -79,14 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
     if (isGov) {
       governorate = value;
       print(governorate);
-    } else {
-      medicalSpecialtyValue = value;
-      print(medicalSpecialtyValue);
     }
-  }
-
-  void setHospital(String value) {
-    hospital = value;
   }
 
   void initialState() {
@@ -96,11 +92,25 @@ class AuthCubit extends Cubit<AuthState> {
     emailController.clear();
     passwordSignController.clear();
     natidController.clear();
-    medicalSpecialtyValue = '';
+    birthDateController.clear();
     governorate = '';
     regNumController.clear();
     passwordLoginController.clear();
 
     emit(AuthInitial());
+  }
+
+  Future<void> selectedDate(BuildContext context) async {
+    DateTime? _picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1940),
+      lastDate: DateTime.now(),
+    );
+
+    if (_picked != null) {
+      birthDateController.text = _picked.toString().split(" ")[0];
+      emit(BirthDatePickedSuccess());
+    }
   }
 }

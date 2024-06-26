@@ -10,3 +10,4 @@ const kGreyLight = Color(0xFFB2B4C1);
 const kGreyDark = Color(0xFF455A64);
 const kBlack = Color(0xFF000000);
 const kRed = Colors.red;
+const kGreen = Color(0xff5BBF83);

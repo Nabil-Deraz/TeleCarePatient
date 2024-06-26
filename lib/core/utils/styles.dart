@@ -19,7 +19,15 @@ abstract class Styles {
     fontWeight: FontWeight.w700,
     fontSize: 24,
   );
-
+  static const Title9 = TextStyle(
+    fontSize: 9,
+  );
+  static const Title8 = TextStyle(
+    fontSize: 8,
+  );
+  static const Title7 = TextStyle(
+    fontSize: 7,
+  );
   static const Title11 = TextStyle(
     fontSize: 11,
   );

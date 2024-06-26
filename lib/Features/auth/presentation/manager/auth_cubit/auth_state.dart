@@ -24,7 +24,7 @@ final class SignupError extends AuthState {
 final class HospitlasLoading extends AuthState {}
 
 final class HospitalsSuccess extends AuthState {
-  final HospitalsModel hospitals;
+  final HospitalModel hospitals;
   HospitalsSuccess(this.hospitals);
 }
 
@@ -39,3 +39,5 @@ final class GovernoratesError extends AuthState {
   final String message;
   GovernoratesError(this.message);
 }
+
+final class BirthDatePickedSuccess extends AuthState {}

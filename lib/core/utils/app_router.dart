@@ -1,10 +1,15 @@
 import 'package:go_router/go_router.dart';
+import 'package:tecpatient/Features/Profile/presentation/views/profile_info_view.dart';
+import 'package:tecpatient/Features/Profile/presentation/views/profile_view.dart';
+import 'package:tecpatient/Features/SuccessPage/presentation/views/success_page_view.dart';
 import 'package:tecpatient/Features/auth/presentation/views/get_started_view.dart';
 import 'package:tecpatient/Features/auth/presentation/views/login_view.dart';
 import 'package:tecpatient/Features/auth/presentation/views/signup_view.dart';
+import 'package:tecpatient/Features/booking/presentation/booking_view.dart';
 import 'package:tecpatient/Features/home/presentation/views/home_view.dart';
 import 'package:tecpatient/Features/onBoarding/views/onBoarding_page.dart';
 import 'package:tecpatient/Features/splash/presentation/views/splash_view.dart';
+import 'package:tecpatient/core/models/hospitals_model.dart';
 
 abstract class AppRouter {
   static const kOnBoardingView = '/onBoardingView';
@@ -15,15 +20,14 @@ abstract class AppRouter {
   static const kAppointmentView = '/appointmentView';
   static const kConsultantView = '/consultantView';
   static const klabView = '/labView';
+  static const kBooking = '/bookingView';
+  static const kBookingSuccessful = '/bookingSuccessfulView';
   static const kProfileView = '/profileView';
   static const kSearchView = '/searchView';
   static const kSettingsView = '/settingsView';
-  static const kHistoryView = '/historyView';
-  static const kChatView = '/chatView';
-  static const kResultView = '/resultView';
   static const kAppointmentsPatientsDetailsView =
       '/appointmentsPatientsDetailsView';
-  static const kNewMedicalReecordView = '/newMedicalRecordView';
+  static const kProfileInfoView = '/profileInfoView';
 
   static final router = GoRouter(
     routes: [
@@ -41,6 +45,24 @@ abstract class AppRouter {
       GoRoute(
         path: kHomeView,
         builder: (context, state) => const HomeView(),
+      ),
+      GoRoute(
+        path: kProfileView,
+        builder: (context, state) => const ProfileView(),
+      ),
+      GoRoute(
+        path: kProfileInfoView,
+        builder: (context, state) => const ProfileInfoView(),
+      ),
+      GoRoute(
+        path: kBooking,
+        builder: (context, state) => BookingPage(
+          data: state.extra as Data,
+        ),
+      ),
+      GoRoute(
+        path: kBookingSuccessful,
+        builder: (context, state) => BookingSuccessfulPage(),
       ),
       GoRoute(
         path: kLoginView,

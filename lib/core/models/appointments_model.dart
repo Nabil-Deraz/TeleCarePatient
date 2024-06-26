@@ -1,10 +1,10 @@
-class Appointments {
+class AppointmentsModel {
   List<Data>? data;
   Meta? meta;
 
-  Appointments({this.data, this.meta});
+  AppointmentsModel({this.data, this.meta});
 
-  Appointments.fromJson(Map<String, dynamic> json) {
+  AppointmentsModel.fromJson(Map<String, dynamic> json) {
     data = json["data"] == null
         ? null
         : (json["data"] as List).map((e) => Data.fromJson(e)).toList();
@@ -104,6 +104,7 @@ class Attributes {
   Patient? patient;
   Receptionists? receptionists;
   Doctor? doctor;
+  Consultant? consultant;
 
   Attributes(
       {this.specializations,
@@ -117,7 +118,8 @@ class Attributes {
       this.hospital,
       this.patient,
       this.receptionists,
-      this.doctor});
+      this.doctor,
+      this.consultant});
 
   Attributes.fromJson(Map<String, dynamic> json) {
     specializations = json["specializations"];
@@ -136,6 +138,9 @@ class Attributes {
         ? null
         : Receptionists.fromJson(json["receptionists"]);
     doctor = json["doctor"] == null ? null : Doctor.fromJson(json["doctor"]);
+    consultant = json["consultant"] == null
+        ? null
+        : Consultant.fromJson(json["consultant"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -160,6 +165,25 @@ class Attributes {
     if (doctor != null) {
       _data["doctor"] = doctor?.toJson();
     }
+    if (consultant != null) {
+      _data["consultant"] = consultant?.toJson();
+    }
+    return _data;
+  }
+}
+
+class Consultant {
+  dynamic data;
+
+  Consultant({this.data});
+
+  Consultant.fromJson(Map<String, dynamic> json) {
+    data = json["data"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["data"] = data;
     return _data;
   }
 }
@@ -519,7 +543,7 @@ class Attributes1 {
   String? updatedAt;
   String? publishedAt;
   String? name;
-  dynamic idHospital;
+  String? idHospital;
 
   Attributes1(
       {this.address,

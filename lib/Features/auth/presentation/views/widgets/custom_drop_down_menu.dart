@@ -28,6 +28,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
           borderRadius: BorderRadius.circular(15),
           border: Border.all(color: kGreyLight, width: 1)),
       child: DropdownButton(
+        style: Styles.Title13.copyWith(color: kBlack),
         menuMaxHeight: MediaQuery.of(context).size.height * .5,
         icon: const Icon(Icons.keyboard_arrow_down),
         padding: const EdgeInsets.all(10.0),

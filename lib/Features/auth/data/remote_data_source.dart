@@ -62,14 +62,15 @@ class AuthRemoteDataSource {
   }
 
   Future<bool> signupPatients(
-      String regNum,
-      String name,
-      String phone,
-      String email,
-      String password,
-      String natid,
-      String governorate,
-      BuildContext context) async {
+      {required String regNum,
+      required String name,
+      required String phone,
+      required String email,
+      required String password,
+      required String natid,
+      required String governorate,
+      required String birthdate,
+      required BuildContext context}) async {
     try {
       print("regNum: $regNum");
       print("name: $name");
@@ -78,6 +79,7 @@ class AuthRemoteDataSource {
       print("password: $password");
       print("natid: $natid");
       print("governorate: $governorate");
+      print("Birthdate: $birthdate");
 
       final response = await http.post(Uri.parse(AppStrings.apiPatient),
           body: jsonEncode({
@@ -86,8 +88,11 @@ class AuthRemoteDataSource {
               "Name": name,
               "phone": phone,
               "Email": email,
-              "Address": governorate,
+              "Governorate": governorate,
               "Password": password,
+              "NationalId": natid,
+              "Birth_Date": birthdate,
+              "Gender": 'Male'
             }
           }),
           headers: {

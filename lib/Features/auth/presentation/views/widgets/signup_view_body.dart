@@ -9,6 +9,7 @@ import 'package:tecpatient/constants.dart';
 import 'package:tecpatient/core/utils/app_router.dart';
 import 'package:tecpatient/core/utils/assets.dart';
 import 'package:tecpatient/core/utils/functions/alert.dart';
+import 'package:tecpatient/core/utils/styles.dart';
 import 'package:tecpatient/core/widgets/customButton.dart';
 
 class SignupViewBody extends StatefulWidget {
@@ -82,10 +83,37 @@ class _SignupViewBodyState extends State<SignupViewBody> {
               const SizedBox(height: 20),
               CustomTextField(
                 labelText: "National ID",
-                hintText: "Expiry Date",
+                hintText: "Enter ID Numbers",
                 maxLength: 14,
                 keyboardType: TextInputType.number,
                 controller: context.read<AuthCubit>().natidController,
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                readOnly: true,
+                controller: context.read<AuthCubit>().birthDateController,
+                style: Styles.Title13.copyWith(color: kBlack),
+                decoration: InputDecoration(
+                  labelText: "Date",
+                  hintText: "Pick Birthdate",
+                  filled: true,
+                  fillColor: kGreyLight.withOpacity(0.2),
+                  labelStyle: Styles.Title13.copyWith(color: kBlack),
+                  hintStyle: Styles.Title13.copyWith(color: kGreyDark),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: kGreyLight,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: kGreyLight, width: 0)),
+                ),
+                onTap: () {
+                  context.read<AuthCubit>().selectedDate(context);
+                },
               ),
               const SizedBox(height: 20),
               const CustomDropDownMenu(
