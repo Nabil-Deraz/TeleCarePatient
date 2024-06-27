@@ -21,9 +21,11 @@ class AuthRemoteDataSource {
       if (response.statusCode == 200) {
         print("Success login Patient");
         final data = jsonDecode(response.body);
+        // print(data);
         if (data is Map<String, dynamic>) {
           // Assuming ConsultantModel.fromJson method parses a single JSON object
           patients = PatientModel.fromJson(data);
+          print("hereee");
           print("Patient: ${patients.data?[0].attributes!.name ?? "nothing"}");
           if (SecurityManager.comparePasswords(
             password,
