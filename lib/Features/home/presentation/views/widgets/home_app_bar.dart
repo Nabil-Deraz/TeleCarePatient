@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:tecpatient/constants.dart';
 import 'package:tecpatient/core/local/cache_helper.dart';

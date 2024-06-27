@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart';
 import 'package:tecpatient/Features/home/presentation/view_models/cubit/patient_appointment_cubit.dart';
 import 'package:tecpatient/Features/home/presentation/views/widgets/info_banner.dart';
 import 'package:tecpatient/Features/home/presentation/views/widgets/patients_appointments.dart';

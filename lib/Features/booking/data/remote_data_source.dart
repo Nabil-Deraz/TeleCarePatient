@@ -8,26 +8,26 @@ import 'package:http/http.dart' as http;
 
 class BookingRemoteDataSource {
   Future<bool> postAppointment({
-    required String AppId,
-    required int HospId,
+    required String appId,
+    required int hospId,
     required int patientId,
     required String date,
     required String time,
-    required String Specialization,
+    required String specialization,
   }) async {
     try {
-      print("appId: $AppId");
+      print("appId: $appId");
       print("patientId: $patientId");
 
       final response = await http.post(Uri.parse(AppStrings.apiAppointments),
           body: jsonEncode({
             "data": {
-              "AppointmentID": "A$AppId",
+              "AppointmentID": "A$appId",
               "patient": patientId,
-              "Specialization": Specialization,
+              "specializations": specialization,
               "date": date,
               "time": time,
-              "hospital": HospId
+              "hospital": hospId
             }
           }),
           headers: {
@@ -73,6 +73,8 @@ class BookingRemoteDataSource {
       if (response.statusCode == 200) {
         print("Success check Appointment ID");
         final data = jsonDecode(response.body);
+        print("holaaaaaaaaaaaaaa dataaaaaaaaaaaaaaaaa");
+        print(data);
 // consultants.data?[0].attributes!.name
         if (data is Map<String, dynamic>) {
           // Assuming ConsultantModel.fromJson method parses a single JSON object
