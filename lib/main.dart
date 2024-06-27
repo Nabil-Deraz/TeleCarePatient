@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tecpatient/Features/Profile/presentation/manager/profile_cubit/cubit/profile_cubit.dart';
 import 'package:tecpatient/Features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:tecpatient/Features/booking/presentation/view_models/create_appointment_cubit.dart';
 import 'package:tecpatient/Features/home/presentation/view_models/cubit/navbarcubit/nav_bar_cubit.dart';
 import 'package:tecpatient/Features/home/presentation/view_models/cubit/patient_appointment_cubit.dart';
 import 'package:tecpatient/Features/home/presentation/view_models/cubit/patient_result_track_cubit.dart';
@@ -39,13 +40,14 @@ class tecpatient extends StatelessWidget {
         BlocProvider(create: (context) => PatientAppointmentCubit()),
         BlocProvider(create: (context) => ProfileCubit()),
         BlocProvider(create: (context) => PatientResultTrackCubit()),
+        BlocProvider(create: (context) => CreateAppointmentCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark().copyWith(
+        theme: ThemeData.light().copyWith(
             scaffoldBackgroundColor: kBackgroundColor,
             textTheme:
-                GoogleFonts.inriaSansTextTheme(ThemeData.dark().textTheme)),
+                GoogleFonts.inriaSansTextTheme(ThemeData.light().textTheme)),
         routerConfig: AppRouter.router,
       ),
     );

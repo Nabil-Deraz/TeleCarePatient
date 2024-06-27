@@ -1,43 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tecpatient/Features/auth/presentation/views/widgets/custom_drop_down_menu.dart';
 import 'package:tecpatient/Features/booking/data/static/static.dart';
+import 'package:tecpatient/Features/booking/presentation/view_models/create_appointment_cubit.dart';
 import 'package:tecpatient/constants.dart';
 import 'package:tecpatient/core/custom_appbar.dart';
 import 'package:tecpatient/core/models/hospitals_model.dart';
 import 'package:tecpatient/core/utils/app_router.dart';
-import 'package:tecpatient/core/utils/assets.dart';
 import 'package:tecpatient/core/utils/config.dart';
 import 'package:tecpatient/core/utils/styles.dart';
 
-class BookingPage extends StatefulWidget {
+class BookingPage extends StatelessWidget {
   const BookingPage({super.key, required this.data});
   final Data data;
-  @override
-  State<BookingPage> createState() => _BookingPageState();
-}
-
-class _BookingPageState extends State<BookingPage> {
-  CalendarFormat _format = CalendarFormat.month;
-  DateTime _focusDay = DateTime.now();
-  DateTime _currentDay = DateTime.now();
-  int? _currentIndex;
-  bool _isWeekend = false;
-  bool _dateSelected = false;
-  bool _timeSelected = false;
-
   @override
   Widget build(BuildContext context) {
     Config().init(context);
     return Scaffold(
       appBar: CustomAppBar(
-        appTitle: widget.data.attributes?.name ?? '',
-        icon: FaIcon(Icons.arrow_back_ios),
+        appTitle: data.attributes?.name ?? '',
+        icon: const FaIcon(Icons.arrow_back_ios),
       ),
       body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: Column(
@@ -52,8 +40,8 @@ class _BookingPageState extends State<BookingPage> {
                           borderRadius: BorderRadius.circular(10),
                           image: DecorationImage(
                               fit: BoxFit.fill,
-                              image: NetworkImage(widget.data.attributes
-                                      ?.hospitalImg?.data?.attributes?.url ??
+                              image: NetworkImage(data.attributes?.hospitalImg
+                                      ?.data?.attributes?.url ??
                                   ''))),
                     ),
                   ),
@@ -71,7 +59,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-          _isWeekend
+          context.read<CreateAppointmentCubit>().isWeekend
               ? SliverToBoxAdapter(
                   child: Container(
                   padding:
@@ -81,47 +69,60 @@ class _BookingPageState extends State<BookingPage> {
                       'Not available on weekends, please select another date',
                       style: Styles.Title18.copyWith(color: kDarkTitleColor)),
                 ))
-              : SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = index;
-                            _timeSelected = true;
-                          });
+              : BlocBuilder<CreateAppointmentCubit, CreateAppointmentState>(
+                  builder: (context, state) {
+                  return SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return InkWell(
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              context
+                                  .read<CreateAppointmentCubit>()
+                                  .changeCalendarSelection(index, true);
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1.75,
+                                  color: context
+                                              .read<CreateAppointmentCubit>()
+                                              .currentIndex ==
+                                          index
+                                      ? Colors.white
+                                      : kPrimaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                                color: context
+                                            .read<CreateAppointmentCubit>()
+                                            .currentIndex ==
+                                        index
+                                    ? kPrimaryColor
+                                    : null,
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: context
+                                              .read<CreateAppointmentCubit>()
+                                              .currentIndex ==
+                                          index
+                                      ? Colors.white
+                                      : kPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          );
                         },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1.75,
-                              color: _currentIndex == index
-                                  ? Colors.white
-                                  : kPrimaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                            color:
-                                _currentIndex == index ? kPrimaryColor : null,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: _currentIndex == index
-                                  ? Colors.white
-                                  : kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: 8,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, childAspectRatio: 1.5)),
+                        childCount: 8,
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 4, childAspectRatio: 1.5));
+                }),
           SliverToBoxAdapter(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -155,12 +156,16 @@ class _BookingPageState extends State<BookingPage> {
 
                     // )
                     child: MaterialButton(
-                      onPressed: _timeSelected && _dateSelected
-                          ? () {
-                              GoRouter.of(context)
-                                  .push(AppRouter.kBookingSuccessful);
-                            }
-                          : null,
+                      onPressed:
+                          context.read<CreateAppointmentCubit>().timeSelected &&
+                                  context
+                                      .read<CreateAppointmentCubit>()
+                                      .dateSelected
+                              ? () {
+                                  GoRouter.of(context)
+                                      .push(AppRouter.kBookingSuccessful);
+                                }
+                              : null,
                       color: kPrimaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -184,57 +189,51 @@ class _BookingPageState extends State<BookingPage> {
   }
 
   Widget _tableCalendar() {
-    return TableCalendar(
-      headerStyle: const HeaderStyle(
-          titleCentered: true,
-          leftChevronIcon: Icon(
-            Icons.chevron_left,
-            color: kPrimaryColor,
+    return BlocBuilder<CreateAppointmentCubit, CreateAppointmentState>(
+      builder: (context, state) {
+        return TableCalendar(
+          headerStyle: const HeaderStyle(
+              titleCentered: true,
+              leftChevronIcon: Icon(
+                Icons.chevron_left,
+                color: kPrimaryColor,
+              ),
+              rightChevronIcon: Icon(
+                Icons.chevron_right,
+                color: kPrimaryColor,
+              ),
+              titleTextStyle: TextStyle(color: Colors.black)),
+          focusedDay: context.read<CreateAppointmentCubit>().focusDay,
+          firstDay: DateTime.now(),
+          lastDay: DateTime(2024, 12, 31),
+          calendarFormat: context.read<CreateAppointmentCubit>().format,
+          currentDay: context.read<CreateAppointmentCubit>().currentDay,
+          daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(color: Colors.black),
+              weekendStyle: TextStyle(color: Colors.black)),
+          rowHeight: 48,
+          calendarStyle: const CalendarStyle(
+            defaultTextStyle: TextStyle(color: Colors.black),
+            // defaultDecoration: BoxDecoration(
+            //   color: Colors.black
+            // ),
+            todayDecoration: BoxDecoration(
+              color: kPrimaryColor,
+              shape: BoxShape.circle,
+            ),
           ),
-          rightChevronIcon: Icon(
-            Icons.chevron_right,
-            color: kPrimaryColor,
-          ),
-          titleTextStyle: TextStyle(color: Colors.black)),
-      focusedDay: _focusDay,
-      firstDay: DateTime.now(),
-      lastDay: DateTime(2024, 12, 31),
-      calendarFormat: _format,
-      currentDay: _currentDay,
-      daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: TextStyle(color: Colors.black),
-          weekendStyle: TextStyle(color: Colors.black)),
-      rowHeight: 48,
-      calendarStyle: const CalendarStyle(
-        defaultTextStyle: TextStyle(color: Colors.black),
-        // defaultDecoration: BoxDecoration(
-        //   color: Colors.black
-        // ),
-        todayDecoration: BoxDecoration(
-          color: kPrimaryColor,
-          shape: BoxShape.circle,
-        ),
-      ),
-      availableCalendarFormats: const {CalendarFormat.month: 'Month'},
-      onFormatChanged: (format) {
-        setState(() {
-          _format = format;
-        });
+          availableCalendarFormats: const {CalendarFormat.month: 'Month'},
+          onFormatChanged: (format) {
+            context.read<CreateAppointmentCubit>().changeFormat(format);
+          },
+          onDaySelected: ((selectedDay, focusedDay) {
+            context
+                .read<CreateAppointmentCubit>()
+                .changeCurrentFocusDate(selectedDay, focusedDay, true);
+            context.read<CreateAppointmentCubit>().weekends(selectedDay);
+          }),
+        );
       },
-      onDaySelected: ((selectedDay, focusedDay) {
-        setState(() {
-          _currentDay = selectedDay;
-          _focusDay = focusedDay;
-          _dateSelected = true;
-          if (selectedDay.weekday == 5 || selectedDay.weekday == 6) {
-            _isWeekend = true;
-            _timeSelected = false;
-            _currentIndex = null;
-          } else {
-            _isWeekend = false;
-          }
-        });
-      }),
     );
   }
 }

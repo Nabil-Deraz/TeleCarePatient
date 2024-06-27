@@ -13,3 +13,16 @@ final class CreateAppointmentFailure extends CreateAppointmentState {
 
   CreateAppointmentFailure(this.message);
 }
+
+final class CreateAppointmentSelected extends CreateAppointmentState {
+  final int currentIndex;
+  final bool isSelected;
+
+  CreateAppointmentSelected(this.currentIndex, this.isSelected);
+}
+
+final class CreateAppointmentChangeFormat extends CreateAppointmentState {
+  final String message;
+
+  CreateAppointmentChangeFormat(this.message);
+}
