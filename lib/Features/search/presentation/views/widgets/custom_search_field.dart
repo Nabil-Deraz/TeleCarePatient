@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tecpatient/Features/home/presentation/view_models/cubit/navbarcubit/nav_bar_cubit.dart';
 import 'package:tecpatient/Features/search/presentation/cubits/search_cubit.dart';
 import 'package:tecpatient/constants.dart';
 import 'package:tecpatient/core/utils/styles.dart';

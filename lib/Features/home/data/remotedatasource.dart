@@ -5,7 +5,6 @@ import 'package:tecpatient/core/models/PatientModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:tecpatient/core/models/appointments_model.dart';
 import 'package:tecpatient/core/utils/app_strings.dart';
-import '';
 
 class HomeRemoteDataSource {
   Future<PatientModel> getPatientsID(String id) async {
@@ -27,6 +26,7 @@ class HomeRemoteDataSource {
       } else {
         print("Error in get Medical Records");
         final jsonResponse = jsonDecode(response.body);
+        ErrorMessageModel.fromJson(jsonResponse);
         print('response error');
         print(response.body);
       }

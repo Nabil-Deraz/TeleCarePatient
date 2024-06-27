@@ -151,14 +151,14 @@ class AppointmentInfo extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data?.attributes?.specializations ?? '',
+                        data.attributes?.specializations ?? '',
                         style: Styles.Title11.copyWith(
                           fontWeight: FontWeight.w700,
                           color: Color(0xff000000),
                         ),
                       ),
                       Text(
-                        time24To12HoursConvert(data!.attributes!.time!),
+                        time24To12HoursConvert(data.attributes!.time!),
                         style: Styles.Title11.copyWith(
                             color: Color(0xffA5A5A5),
                             fontWeight: FontWeight.w400),
