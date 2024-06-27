@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tecpatient/Features/booking/data/remote_data_source.dart';
 import 'package:tecpatient/core/local/cache_helper.dart';
@@ -12,8 +14,6 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
 
   BookingRemoteDataSource bookingRemoteDataSource = BookingRemoteDataSource();
 
-  TextEditingController selectedDayController = TextEditingController();
-  TextEditingController selectedTimeController = TextEditingController();
   TextEditingController specialitiyController = TextEditingController();
 
   CalendarFormat format = CalendarFormat.month;
@@ -23,6 +23,11 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
   bool isWeekend = false;
   bool dateSelected = false;
   bool timeSelected = false;
+
+  String formattedTime = "";
+  DateTime time = DateTime.now();
+
+  String spec = '';
 
   void createAppointment(int hospitalid) async {
     emit(CreateAppointmentLoading());
@@ -34,13 +39,14 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
       uniqueID = await bookingRemoteDataSource.checkAppointmentId(id);
       print("hola from appointment");
     } while (uniqueID);
+    print("iddddddddddddddddddd $id");
     bool appointments = await bookingRemoteDataSource.postAppointment(
-      patientId: CacheHelper.getData(key: 'patientId'),
-      AppId: id,
-      HospId: hospitalid,
-      date: selectedDayController.text,
-      time: selectedTimeController.text,
-      Specialization: specialitiyController.text,
+      patientId: CacheHelper.getData(key: 'Pid'),
+      appId: id,
+      hospId: hospitalid,
+      date: DateFormat("yyyy-MM-dd").format(focusDay),
+      time: formattedTime,
+      specialization: spec,
     );
     if (appointments) {
       emit(CreateAppointmentSuccess());
@@ -60,6 +66,11 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
   void changeCalendarSelection(int currentIndex, bool isSelected) {
     this.currentIndex = currentIndex;
     this.timeSelected = isSelected;
+    time = DateTime(0, 0, 0, currentIndex + 9);
+    formattedTime = DateFormat('HH:mm:ss').format(time);
+    // print(
+    // "Time Selected ${DateFormat("hh:mm:ss").format(DateTime.parse((currentIndex + 9).toString()))}");
+    print("Time Selected $formattedTime");
     emit(CreateAppointmentInitial());
   }
 
@@ -73,6 +84,10 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
     this.currentDay = currentDay;
     this.focusDay = focusDay;
     this.dateSelected = dateSelected;
+    // print("Current Day ${currentDay}");
+    print("focus Day ${DateFormat("yyyy-MM-dd").format(focusDay)}");
+    // print("focus Day ${focusDay.year}-${focusDay.month}-${focusDay.day}");
+
     emit(CreateAppointmentInitial());
   }
 
@@ -81,9 +96,40 @@ class CreateAppointmentCubit extends Cubit<CreateAppointmentState> {
       isWeekend = true;
       timeSelected = false;
       currentIndex = null;
+      emit(AppointmentWeekend(isWeekend));
     } else {
       isWeekend = false;
+      emit(AppointmentWeekend(isWeekend));
     }
-    emit(CreateAppointmentInitial());
+  }
+
+  void dropDownMenuValue(String value) {
+    spec = value;
+    print(spec);
+  }
+
+  void checkForAvailability(int hospitalid) {
+    if (!(focusDay.isBlank == true || focusDay.isNull == true) &&
+        formattedTime != '' &&
+        spec != '') {
+      createAppointment(hospitalid);
+    } else {
+      emit(CreateAppointmentFailure("Please check that all isn't blank"));
+    }
+  }
+
+  void initialState() {
+    format = CalendarFormat.month;
+    focusDay = DateTime.now();
+    currentDay = DateTime.now();
+    currentIndex = null;
+    isWeekend = false;
+    dateSelected = false;
+    timeSelected = false;
+
+    formattedTime = "";
+    time = DateTime.now();
+
+    spec = '';
   }
 }

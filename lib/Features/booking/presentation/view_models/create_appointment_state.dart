@@ -26,3 +26,9 @@ final class CreateAppointmentChangeFormat extends CreateAppointmentState {
 
   CreateAppointmentChangeFormat(this.message);
 }
+
+final class AppointmentWeekend extends CreateAppointmentState {
+  final bool isWeekend;
+
+  AppointmentWeekend(this.isWeekend);
+}
