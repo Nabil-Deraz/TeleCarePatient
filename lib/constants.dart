@@ -11,3 +11,5 @@ const kGreyDark = Color(0xFF455A64);
 const kBlack = Color(0xFF000000);
 const kRed = Colors.red;
 const kGreen = Color(0xff5BBF83);
+const kGreeen = Color(0xff05AC61);
+const kOrange = Color(0xffFFAC33);

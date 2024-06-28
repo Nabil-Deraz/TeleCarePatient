@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:tecpatient/Features/History/presentation/views/results_view.dart';
 import 'package:tecpatient/Features/Profile/presentation/views/profile_info_view.dart';
 import 'package:tecpatient/Features/Profile/presentation/views/profile_view.dart';
 import 'package:tecpatient/Features/SuccessPage/presentation/views/success_page_view.dart';
@@ -10,6 +11,7 @@ import 'package:tecpatient/Features/home/presentation/views/home_view.dart';
 import 'package:tecpatient/Features/onBoarding/views/onBoarding_page.dart';
 import 'package:tecpatient/Features/splash/presentation/views/splash_view.dart';
 import 'package:tecpatient/core/models/hospitals_model.dart';
+import 'package:tecpatient/core/models/medical_records_model.dart' as md;
 
 abstract class AppRouter {
   static const kOnBoardingView = '/onBoardingView';
@@ -21,6 +23,7 @@ abstract class AppRouter {
   static const kConsultantView = '/consultantView';
   static const klabView = '/labView';
   static const kBooking = '/bookingView';
+  static const kResultView = '/resultView';
   static const kBookingSuccessful = '/bookingSuccessfulView';
   static const kProfileView = '/profileView';
   static const kSearchView = '/searchView';
@@ -72,6 +75,12 @@ abstract class AppRouter {
         path: kSignupView,
         builder: (context, state) => const SignupView(),
       ),
+      GoRoute(
+        path: kResultView,
+        builder: (context, state) => ResultsView(
+          medicalRecordsModel: state.extra as md.Data,
+        ),
+      )
     ],
   );
 }

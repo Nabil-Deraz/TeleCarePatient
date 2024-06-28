@@ -1,19 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:tecpatient/Features/home/presentation/views/widgets/home_view_body.dart';
-
-// class HomeView extends StatelessWidget {
-//   const HomeView({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Scaffold(
-//       body: SafeArea(
-//           child: SingleChildScrollView(
-//               physics: BouncingScrollPhysics(), child: HomeViewBody())),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tecpatient/Features/home/presentation/view_models/cubit/navbarcubit/nav_bar_cubit.dart';
@@ -48,11 +32,13 @@ class HomeView extends StatelessWidget {
               textList: const [
                 'Home',
                 'Search',
+                'History',
                 'Profile',
               ],
               iconList: const [
                 Icons.home_outlined,
                 Icons.search,
+                Icons.calendar_today_outlined,
                 Icons.person,
               ],
             );

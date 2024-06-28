@@ -27,7 +27,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                     height: 50,
                   ),
                   const Text("Welcome Back", style: Styles.Title13),
-                  Text(CacheHelper.getData(key: 'name'), style: Styles.Title20),
+                  Text(CacheHelper.getData(key: 'name'),
+                      style: Styles.Title20.copyWith(color: kWhitecomp)),
                   const SizedBox(
                     height: 10,
                   ),
