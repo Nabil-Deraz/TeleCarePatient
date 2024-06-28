@@ -7,7 +7,11 @@ final class PatientResultTrackInitial extends PatientResultTrackState {}
 
 final class PatientResultTrackLoading extends PatientResultTrackState {}
 
-final class PatientResultTrackSuccess extends PatientResultTrackState {}
+final class PatientResultTrackSuccess extends PatientResultTrackState {
+  final MedicalRecordsModel medicalRecords;
+
+  PatientResultTrackSuccess({required this.medicalRecords});
+}
 
 final class PatientResultTrackFailure extends PatientResultTrackState {
   final String errorMessage;

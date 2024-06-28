@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
+import 'package:tecpatient/Features/History/presentation/views/widgets/history_view_body.dart';
 import 'package:tecpatient/Features/Profile/presentation/views/profile_view.dart';
 import 'package:tecpatient/Features/home/presentation/views/widgets/home_view_body.dart';
 import 'package:tecpatient/Features/search/presentation/views/search_view.dart';
@@ -14,6 +15,7 @@ class NavBarCubit extends Cubit<NavBarState> {
   List<Widget> routes = [
     const HomeViewBody(),
     const SearchViewBody(),
+    const HistoryViewBody(),
     const ProfileView()
   ];
   void changeIndex(int index) {

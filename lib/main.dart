@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tecpatient/Features/History/presentation/manager/cubits/history_cubit/history_cubit.dart';
 import 'package:tecpatient/Features/Profile/presentation/manager/profile_cubit/cubit/profile_cubit.dart';
 import 'package:tecpatient/Features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
 import 'package:tecpatient/Features/booking/presentation/view_models/create_appointment_cubit.dart';
@@ -41,6 +42,7 @@ class tecpatient extends StatelessWidget {
         BlocProvider(create: (context) => ProfileCubit()),
         BlocProvider(create: (context) => PatientResultTrackCubit()),
         BlocProvider(create: (context) => CreateAppointmentCubit()),
+        BlocProvider(create: (context) => HistoryCubit()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
